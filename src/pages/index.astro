@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 
+import BlockRenderer from "../components/BlockRenderer.astro";
+
 const response = await fetch(`${import.meta.env.WPGRAPHQL_URL}`, {
 	method: "POST",
 	headers: {
@@ -21,7 +23,7 @@ const response = await fetch(`${import.meta.env.WPGRAPHQL_URL}`, {
 }) ;
 
 const {data} = await response.json();
-console.log(data.nodeByUri);
+const blocks = data.nodeByUri?.blocks || [];
 ---
 
 <html lang="en">
@@ -33,6 +35,6 @@ console.log(data.nodeByUri);
 		<title>Astro</title>
 	</head>
 	<body>
-		<h1 class="bg-red-500">Astro</h1>
+		<BlockRenderer blocks={blocks} />
 	</body>
 </html>
