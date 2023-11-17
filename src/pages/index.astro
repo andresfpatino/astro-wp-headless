@@ -1,8 +1,8 @@
 ---
-import "../styles/global.css";
 
 import BlockRenderer from "../components/BlockRenderer.astro";
 import type { Block } from '@wp-block-tools/styles';
+import CommonHead from "../components/CommonHead.astro";
 
 const response = await fetch(`${import.meta.env.WPGRAPHQL_URL}`, {
 	method: "POST",
@@ -11,12 +11,15 @@ const response = await fetch(`${import.meta.env.WPGRAPHQL_URL}`, {
 	},
 	body: JSON.stringify({
 		query: `
-			query PageQuery {
-				cssVariables,
+			query PageQuery {				
 				nodeByUri(uri: "/") {
 					... on Page {
 						id
 						blocks
+						seo {
+							metaDesc
+							title
+						}
 					}
 				}
 			}		
@@ -26,18 +29,13 @@ const response = await fetch(`${import.meta.env.WPGRAPHQL_URL}`, {
 
 const {data} = await response.json();
 const blocks = (data.nodeByUri?.blocks || []) as Block[];
+const seo = data.nodeByUri?.seo;
+
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-		{ !!data.cssVariables && <style set:html={`:root{ ${data.cssVariables} }`} /> }
-	</head>
 
+	<CommonHead title={seo.title || ""} description={seo.metaDesc || ""} />
 	<body>
 		<BlockRenderer blocks={blocks} />
 	</body>
