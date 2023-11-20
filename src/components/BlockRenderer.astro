@@ -23,12 +23,16 @@ const { blocks } = Astro.props;
             case "core/columns":
             case "core/column":
             case "core/post-content": 
+            case "core/group":
                 return (
                     <div class={classes} style={styles}> 
                         <BlockRendererInner blocks={block.innerBlocks || []} />
                     </div>
                 );
-
+            case "core/template-part":
+                return(
+                    <BlockRendererInner blocks={block.innerBlocks || []} />  
+                );
             default:
                 return null;
     }
