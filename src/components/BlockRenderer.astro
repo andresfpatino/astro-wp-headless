@@ -3,6 +3,7 @@ import BlockRendererInner from './BlockRenderer.astro';
 import { getBlockStyling } from '@wp-block-tools/styles';
 import type { Block } from '@wp-block-tools/styles';
 import { Image } from "astro:assets";
+
 type Props = {
     blocks: Block[];
 }
@@ -32,11 +33,13 @@ const { blocks } = Astro.props;
             case "core/site-logo":
                 return(
                     <div class={classes} style={styles}>
-                        <Image 
-                            width={block.attributes?.width || "50"} 
-                            height={block.attributes?.height || "50"}
-                            src={block.attributes?.url || ""}
-                            alt="Logo site" />
+                        <a href={Astro.url.href}>
+                            <Image 
+                                width={block.attributes?.width || "50"} 
+                                height={block.attributes?.height || "50"}
+                                src={block.attributes?.url || ""}
+                                alt="Logo site" />
+                        </a>
                     </div>
                 );
             case "core/template-part":
