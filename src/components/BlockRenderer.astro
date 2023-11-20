@@ -2,7 +2,7 @@
 import BlockRendererInner from './BlockRenderer.astro';
 import { getBlockStyling } from '@wp-block-tools/styles';
 import type { Block } from '@wp-block-tools/styles';
-
+import { Image } from "astro:assets";
 type Props = {
     blocks: Block[];
 }
@@ -29,11 +29,21 @@ const { blocks } = Astro.props;
                         <BlockRendererInner blocks={block.innerBlocks || []} />
                     </div>
                 );
+            case "core/site-logo":
+                return(
+                    <div class={classes} style={styles}>
+                        <Image 
+                            width={block.attributes?.width || "50"} 
+                            height={block.attributes?.height || "50"}
+                            src={block.attributes?.url || ""}
+                            alt="Logo site" />
+                    </div>
+                );
             case "core/template-part":
                 return(
                     <BlockRendererInner blocks={block.innerBlocks || []} />  
                 );
-            default:
+            default: 
                 return null;
     }
     })
