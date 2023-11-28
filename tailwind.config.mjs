@@ -5,7 +5,14 @@ export default {
 		'./node_modules/@wp-block-tools/styles/**/*.js',
 	],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				"starlight" 	:	"var(--color--starlight)",
+				"black-hole"	:	"var(--color--black-hole)",
+				"event-horizon" :	"var(--color--event-horizon)",
+				"blast-off"		:	"var(--color--blast-off)",	
+			}
+		},
 	},
 	plugins: [],
 }

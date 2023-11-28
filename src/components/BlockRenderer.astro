@@ -1,6 +1,7 @@
 ---
 import BlockRendererInner from './BlockRenderer.astro';
 import Navigation from './Navigation.astro';
+import NavitagationSubmenu from './NavitagationSubmenu.astro';
 import NavigationLink from './NavigationLink.astro';
 import { getBlockStyling } from '@wp-block-tools/styles';
 import type { Block } from '@wp-block-tools/styles';
@@ -19,6 +20,18 @@ const { blocks } = Astro.props;
         const { styles, classes } = getBlockStyling(block);
 
         switch(block.name){
+
+            case "core/navigation-submenu":
+                return(
+                    <NavitagationSubmenu
+                        classes={classes} 
+                        styles={styles}
+                        label={block.attributes?.label || ""}
+                        url={block.attributes?.url || ""}
+                    >
+                        <BlockRendererInner blocks={block.innerBlocks || []} />
+                    </NavitagationSubmenu>
+                );
 
             case "core/navigation-link":
                 return(
