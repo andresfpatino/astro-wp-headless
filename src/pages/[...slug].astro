@@ -4,6 +4,37 @@ import BlockRenderer from "../components/BlockRenderer.astro";
 import type { Block } from '@wp-block-tools/styles';
 import CommonHead from "../components/CommonHead.astro";
 
+export async function getStaticPaths() {
+	const response = await fetch(`${import.meta.env.WPGRAPHQL_URL}`, {
+		method: "POST",
+		headers: {
+			"content-type" : "application/json"
+		},
+		body: JSON.stringify({
+			query: `
+				query AllPagesQuery {			
+					pages(first: 1000) {
+						nodes {
+							uri
+							blocks
+							seo {
+								title
+								metaDesc
+							}
+						}
+					}
+				}		
+			`
+		})
+	}) ;
+	const {data} = await response.json();
+	return data.pages.nodes.map((page: any) => ({
+		params: {
+			slug: page.uri === "/" ? undefined : page.uri
+		},
+	}));
+}
+
 const response = await fetch(`${import.meta.env.WPGRAPHQL_URL}`, {
 	method: "POST",
 	headers: {
